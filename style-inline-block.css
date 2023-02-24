@@ -1,0 +1,12 @@
+.row {
+  display: block;
+  margin: 0px;
+}
+
+.square {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin: 0px;
+  background-color: black;
+}
