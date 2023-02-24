@@ -27,5 +27,14 @@ body {
   width: 32px;
   height: 32px;
   margin: 0px;
-  background-color: black;
+  background-color: white;
+  /* but we don't want this around each block
+     we only want it around the edges, which is harder
+     even if we did want this around each block, this double counts in between
+     and gives a 1px border around the edges, but 2px borders in between */
+  /*
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+ */
 }
