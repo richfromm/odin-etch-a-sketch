@@ -32,10 +32,20 @@ function addRow(container, squaresPerEdge, squareSizePixels, squareColor) {
 function addSquare(row, squareSizePixels, squareColor) {
     const square = document.createElement('div');
     square.classList.add('square');
+
     square.style.width = `${squareSizePixels}px`;
     square.style.height = `${squareSizePixels}px`;
     square.style.backgroundColor = squareColor;
+
+    square.addEventListener('mouseenter', updateSquare);
+
     row.appendChild(square);
+}
+
+function updateSquare() {
+    console.log("Update square");
+    console.log(this);
+    this.style.backgroundColor = 'black';
 }
 
 console.log("Welcome to Etch-A-Sketch");
