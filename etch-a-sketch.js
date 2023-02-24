@@ -1,12 +1,13 @@
-// The canvas is NxN squares
-// Later this will be variable
-const N = 16
+// The canvas is a 2D array of squares
+// This is the initial size, can be later changed
+const DEFAULT_SQUARES_PER_EDGE = 16
 
+// What color to make the squares when resetting
 const BLANK_SQUARE_COLOR = 'white';
 
 /* Initialize the container */
 function initContainer(squaresPerEdge, squareColor) {
-    console.log("Initializing container")
+    console.log(`Initializing container with ${squaresPerEdge} squares per edge to ${squareColor}`);
 
     const squareSizePixels = getSquareSizePixels(squaresPerEdge);
 
@@ -24,6 +25,36 @@ function initContainer(squaresPerEdge, squareColor) {
     }
     console.log("Container initialized")
     console.log(container)
+}
+
+/* Prompt for size, and initialize the container */
+function resizeContainer() {
+    let squaresPerEdgeStr, squaresPerEdge;
+    let valueEntered = false;
+    do {
+        squaresPerEdgeStr = prompt("How many squares per side of the grid?")
+        if (squaresPerEdgeStr == null) {
+            // Cancel button
+            return;
+        } else if (squaresPerEdgeStr == "") {
+            alert("You have to enter some value");
+        } else {
+            squaresPerEdge = parseInt(squaresPerEdgeStr)
+            if (squaresPerEdge == NaN) {
+                alert("Only numeric values are legal");
+            } else if (squaresPerEdge != squaresPerEdgeStr) {
+                alert("Value must be an integer");
+            } else if (squaresPerEdge < 1 || squaresPerEdge > 100) {
+                alert("Please enter a value between 1 and 100");
+            } else {
+                // If we get this far, we're good
+                valueEntered = true;
+            }
+        }
+    } while (!valueEntered);
+
+    console.assert(squaresPerEdge && squaresPerEdge >= 1 && squaresPerEdge <= 100);
+    initContainer(squaresPerEdge, BLANK_SQUARE_COLOR);
 }
 
 // Using a large portion of the available space, dynamically compute the size of each square.
@@ -81,8 +112,11 @@ function updateSquare() {
 console.log("Welcome to Etch-A-Sketch");
 
 const resetButton = document.querySelector('button#reset');
-resetButton.addEventListener('click', () => { initContainer(N, BLANK_SQUARE_COLOR) });
+resetButton.addEventListener('click', () => { initContainer(DEFAULT_SQUARES_PER_EDGE, BLANK_SQUARE_COLOR) });
 
-initContainer(N, BLANK_SQUARE_COLOR);
+const resizeButton = document.querySelector('button#resize');
+resizeButton.addEventListener('click', resizeContainer);
+
+initContainer(DEFAULT_SQUARES_PER_EDGE, BLANK_SQUARE_COLOR);
 
 console.log("Ready");
