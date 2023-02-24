@@ -17,7 +17,8 @@ body {
   align-items: center;
 }
 
-button {
+button,
+select {
   color: white;
   background-color: red;
   font-size: 18px;

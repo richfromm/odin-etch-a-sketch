@@ -5,6 +5,14 @@ const DEFAULT_SQUARES_PER_EDGE = 16
 // What color to make the squares when resetting
 const BLANK_SQUARE_COLOR = 'white';
 
+const DrawingModes = {
+    Black: "black",
+    White: "white"
+};
+
+// Initial value, can change via pulldown
+let drawingMode = DrawingModes.Black;
+
 /* Initialize the container */
 function initContainer(squaresPerEdge, squareColor) {
     console.log(`Initializing container with ${squaresPerEdge} squares per edge to ${squareColor}`);
@@ -104,9 +112,26 @@ function addSquare(row, squareSizePixels, squareColor) {
 }
 
 function updateSquare() {
-    console.log("Update square");
-    this.style.backgroundColor = 'black';
+    console.log(`Update square based on drawing mode: ${drawingMode}`);
+    this.style.backgroundColor = drawingMode;
     console.log(this);
+}
+
+function setDrawingMode() {
+    console.log("Set drawing mode");
+
+    const drawingModeSelect = document.querySelector('select#drawing-mode');
+    // console.log(drawingModeSelect);
+    // console.log(`value = ${drawingModeSelect.value}`);
+    // This is an alternate way of getting the value
+    // console.log(`options = ${drawingModeSelect.options}`);
+    // console.log(`selectedIndex = ${drawingModeSelect.selectedIndex}`);
+    // console.log(`options[selectedIndex] = ${drawingModeSelect.options[drawingModeSelect.selectedIndex]}`);
+    // console.log(`value at index = ${drawingModeSelect.options[drawingModeSelect.selectedIndex].value}`);
+
+    console.log(`Before: drawingMode = ${drawingMode}`);
+    drawingMode = drawingModeSelect.value;
+    console.log(`After: drawingMode = ${drawingMode}`);
 }
 
 console.log("Welcome to Etch-A-Sketch");
@@ -116,6 +141,9 @@ resetButton.addEventListener('click', () => { initContainer(DEFAULT_SQUARES_PER_
 
 const resizeButton = document.querySelector('button#resize');
 resizeButton.addEventListener('click', resizeContainer);
+
+const drawingModeSelect = document.querySelector('select#drawing-mode');
+drawingModeSelect.addEventListener('change', setDrawingMode);
 
 initContainer(DEFAULT_SQUARES_PER_EDGE, BLANK_SQUARE_COLOR);
 
