@@ -2,6 +2,8 @@
 // Later this will be variable
 const N = 16
 
+const BLANK_SQUARE_COLOR = 'white';
+
 /* Initialize the container */
 function initContainer(squaresPerEdge, squareColor) {
     console.log("Initializing container")
@@ -9,6 +11,13 @@ function initContainer(squaresPerEdge, squareColor) {
     const squareSizePixels = getSquareSizePixels(squaresPerEdge);
 
     const container = document.querySelector('#container');
+    console.log("Clearing container");
+    // The list of child nodes is live, so removing them all can be a little tricky
+    // See https://developer.mozilla.org/en-US/docs/Web/API/Node/childNodes#remove_all_children_from_a_node
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+    }
+
     for (let x = 0; x < squaresPerEdge; x++) {
         // console.log(`Adding row ${x}`);
         addRow(container, squaresPerEdge, squareSizePixels, squareColor);
@@ -70,5 +79,10 @@ function updateSquare() {
 }
 
 console.log("Welcome to Etch-A-Sketch");
-initContainer(N, 'white');
+
+const resetButton = document.querySelector('button#reset');
+resetButton.addEventListener('click', () => { initContainer(N, BLANK_SQUARE_COLOR) });
+
+initContainer(N, BLANK_SQUARE_COLOR);
+
 console.log("Ready");
