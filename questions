@@ -1,0 +1,13 @@
+1) how to get rid of unwanted vertical space between blocks
+   (figured out how to get rid of unwanted horizontal space between inline blocks)
+   negative margin is horribly hacky
+   font-size of 0 works but seems somewhat hacky
+
+2) why do they use "hover" in the instructions? AFAICT, what you want is a 'mouseenter' event
+   https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseenter_event
+
+   there is a hover pseudo-class, but I don't think that's relevant here:
+   https://developer.mozilla.org/en-US/docs/Web/CSS/:hover
+
+3) Is there a better solution to persist state than global variables?
+   (see my SquaresPerEdge and DrawingMode)
