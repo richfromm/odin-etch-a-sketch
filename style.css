@@ -1,5 +1,5 @@
 body {
-  color: red;
+  color: #EC0F0D;
   background-color: #F0F0F0;
   font-family: "Merriweather Sans", sans-serif;
   text-align: center;
@@ -27,7 +27,7 @@ body {
 button,
 select {
   color: white;
-  background-color: red;
+  background-color: #EC0F0D;
   font-size: 18px;
   width: 128px;
   margin: 6px;
