@@ -1,7 +1,3 @@
-// The canvas is a 2D array of squares
-// This is the initial size, can be later changed
-const DEFAULT_SQUARES_PER_EDGE = 16;
-
 // What color to make the squares when resetting
 const BLANK_SQUARE_COLOR = 'white';
 
@@ -19,11 +15,18 @@ const GREY_LEVELS = 10;
 const RGB_MIN = 0;
 const RGB_MAX = 255;
 
-// Initial value, can change via pulldown
-let drawingMode = DrawingModes.Black;
+// XXX is there a better solution than global variables?
+
+// Initial values, can change
+let SquaresPerEdge = 16; // change via prompt from Resize button
+let DrawingMode = DrawingModes.Black; // change via pulldown
 
 /* Initialize the container */
-function initContainer(squaresPerEdge, squareColor) {
+function initContainer() {
+    const squareColor = BLANK_SQUARE_COLOR;
+    // XXX use of global variable
+    const squaresPerEdge = SquaresPerEdge;
+
     console.log(`Initializing container with ${squaresPerEdge} squares per edge to ${squareColor}`);
 
     const squareSizePixels = getSquareSizePixels(squaresPerEdge);
@@ -71,7 +74,11 @@ function resizeContainer() {
     } while (!valueEntered);
 
     console.assert(squaresPerEdge && squaresPerEdge >= 1 && squaresPerEdge <= 100);
-    initContainer(squaresPerEdge, BLANK_SQUARE_COLOR);
+
+    // update global variable
+    SquaresPerEdge = squaresPerEdge;
+
+    initContainer();
 }
 
 // Using a large portion of the available space, dynamically compute the size of each square.
@@ -121,6 +128,9 @@ function addSquare(row, squareSizePixels, squareColor) {
 }
 
 function updateSquare() {
+    // XXX use of global variable
+    const drawingMode = DrawingMode;
+
     console.log(`Update square based on drawing mode: ${drawingMode}`);
     switch (drawingMode) {
         case DrawingModes.Black:
@@ -196,15 +206,16 @@ function setDrawingMode() {
     // console.log(`options[selectedIndex] = ${drawingModeSelect.options[drawingModeSelect.selectedIndex]}`);
     // console.log(`value at index = ${drawingModeSelect.options[drawingModeSelect.selectedIndex].value}`);
 
-    console.log(`Before: drawingMode = ${drawingMode}`);
-    drawingMode = drawingModeSelect.value;
-    console.log(`After: drawingMode = ${drawingMode}`);
+    // update global variable
+    console.log(`Before: drawingMode = ${DrawingMode}`);
+    DrawingMode = drawingModeSelect.value;
+    console.log(`After: drawingMode = ${DrawingMode}`);
 }
 
 console.log("Welcome to Etch-A-Sketch");
 
 const resetButton = document.querySelector('button#reset');
-resetButton.addEventListener('click', () => { initContainer(DEFAULT_SQUARES_PER_EDGE, BLANK_SQUARE_COLOR) });
+resetButton.addEventListener('click', initContainer);
 
 const resizeButton = document.querySelector('button#resize');
 resizeButton.addEventListener('click', resizeContainer);
@@ -212,6 +223,6 @@ resizeButton.addEventListener('click', resizeContainer);
 const drawingModeSelect = document.querySelector('select#drawing-mode');
 drawingModeSelect.addEventListener('change', setDrawingMode);
 
-initContainer(DEFAULT_SQUARES_PER_EDGE, BLANK_SQUARE_COLOR);
+initContainer();
 
 console.log("Ready");
