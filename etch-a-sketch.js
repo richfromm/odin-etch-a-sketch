@@ -5,11 +5,18 @@ const DrawingModes = {
     Black: "black",
     White: "white",
     Darken: "darken",
-    Lighten: "lighten"
+    Lighten: "lighten",
+    ColorCycle: "colorCycle"
 };
 
-// How many levels of grey
+// For Darken and Lighten, how many levels of grey
 const GREY_LEVELS = 10;
+
+// For Color Cycle, use HSL
+// Keep S and L fixed, and cycle H
+const HUE_CYCLE_MILLISEC = 10000;
+const FIXED_SATURATION_PCT = 90;
+const FIXED_LIGHTNESS_PCT = 50;
 
 // range of RGB values
 const RGB_MIN = 0;
@@ -145,6 +152,7 @@ function updateSquare(event) {
             // This case is simple, we can use named colors
             squareDiv.style.backgroundColor = drawingMode;
             break;
+
         case DrawingModes.Darken:
         case DrawingModes.Lighten:
             const squareColor = getComputedStyle(squareDiv).backgroundColor;
@@ -185,6 +193,15 @@ function updateSquare(event) {
             // it's ultimately not precise enough to worry about
             squareDiv.style.backgroundColor = rgbToString(r, g, b);
             break;
+
+        case DrawingModes.ColorCycle:
+            // convert time to within range [0, 255]
+            // cycling through that range every HUE_CYCLE_MILLISEC milliseconds
+            const now_ms = Date.now();
+            const hue = (now_ms * 255 / HUE_CYCLE_MILLISEC) % HUE_CYCLE_MILLISEC;
+            squareDiv.style.backgroundColor = hslToString(hue, FIXED_SATURATION_PCT, FIXED_LIGHTNESS_PCT);
+            break;
+
         default:
             console.error(`Unknown drawing mode, not updating square: ${drawingMode}`);
     }
@@ -199,6 +216,10 @@ function isPureGrey(r, g, b) {
 
 function rgbToString(r, g, b) {
     return `rgb(${r}, ${g}, ${b})`;
+}
+
+function hslToString(h, s, l) {
+    return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
 function setDrawingMode() {
