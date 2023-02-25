@@ -1,6 +1,11 @@
 .row {
   display: block;
   margin: 0px;
+  /* this works but is horribly hacky */
+  /* margin: -4px; */
+  /* this also works, and is slightly less hacky */
+  /* ref: https://www.quora.com/How-do-I-remove-the-space-between-two-divs-or-two-elements/answer/Abu-Bakar-AwanZada?ch=10&oid=369888423&share=1a7ca2b0&srid=habfxd&target_type=answer */
+  font-size: 0px;
 }
 
 .square {
