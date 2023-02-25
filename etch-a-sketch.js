@@ -1,14 +1,23 @@
 // The canvas is a 2D array of squares
 // This is the initial size, can be later changed
-const DEFAULT_SQUARES_PER_EDGE = 16
+const DEFAULT_SQUARES_PER_EDGE = 16;
 
 // What color to make the squares when resetting
 const BLANK_SQUARE_COLOR = 'white';
 
 const DrawingModes = {
     Black: "black",
-    White: "white"
+    White: "white",
+    Darken: "darken",
+    Lighten: "lighten"
 };
+
+// How many levels of grey
+const GREY_LEVELS = 10;
+
+// range of RGB values
+const RGB_MIN = 0;
+const RGB_MAX = 255;
 
 // Initial value, can change via pulldown
 let drawingMode = DrawingModes.Black;
@@ -113,8 +122,66 @@ function addSquare(row, squareSizePixels, squareColor) {
 
 function updateSquare() {
     console.log(`Update square based on drawing mode: ${drawingMode}`);
-    this.style.backgroundColor = drawingMode;
+    switch (drawingMode) {
+        case DrawingModes.Black:
+        case DrawingModes.White:
+            // This case is simple, we can use named colors
+            this.style.backgroundColor = drawingMode;
+            break;
+        case DrawingModes.Darken:
+        case DrawingModes.Lighten:
+            const squareColor = getComputedStyle(this).backgroundColor;
+            // https://stackoverflow.com/a/66623849/9797192
+            // we're going to ignore alpha
+            let [r, g, b, a] = squareColor.match(/\d+/g).map(Number);
+            let greyLevelAdjust = (RGB_MAX - RGB_MIN + 1) / GREY_LEVELS;
+            if (drawingMode == DrawingModes.Darken) {
+                // subtract values to darken
+                greyLevelAdjust *= -1;
+            }
+            // else keep as is, to add values to lighten
+            if (isPureGrey(r, g, b)) {
+                r += greyLevelAdjust;
+            } else {
+                let rgb_limit;
+                if (drawingMode == DrawingModes.Lighten) {
+                    // start lighten at the first level after black
+                    rgb_limit = RGB_MIN;
+                } else {
+                    // start darken at the last level before white
+                    rgb_limit = RGB_MAX;
+                }
+                // greyLevelAdjust is already either a positive or negative value
+                // so this is either add to the min, or subtract from the max
+                r = rgb_limit + greyLevelAdjust;
+            }
+            // keep values in bounds
+            r = Math.min(RGB_MAX, r);
+            r = Math.max(RGB_MIN, r);
+            // darken and lighten just give grey values as results
+            g = r;
+            b = r;
+            // this automatically rounds, so we don't have to convert r, g, and b to integer values
+            // you could argue that we should anyway, b/c it's sloppy not to
+            // but it's a little silly, since we're not actually storing the more precise value
+            // so we already have potential rounding error
+            // it's ultimately not precise enough to worry about
+            this.style.backgroundColor = rgbToString(r, g, b);
+            break;
+        default:
+            console.error(`Unknown drawing mode, not updating square: ${drawingMode}`);
+    }
+
     console.log(this);
+}
+
+/* Is the input RGB color a literal grey (equal color values) */
+function isPureGrey(r, g, b) {
+    return (r === g) && (g === b);
+}
+
+function rgbToString(r, g, b) {
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 function setDrawingMode() {
