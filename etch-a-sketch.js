@@ -53,7 +53,7 @@ function initContainer() {
 }
 
 /* Prompt for size, and initialize the container */
-function resizeContainer() {
+function resizeContainer(event) {
     let squaresPerEdgeStr, squaresPerEdge;
     let valueEntered = false;
     do {
@@ -127,12 +127,19 @@ function addSquare(row, squareSizePixels, squareColor) {
     square.style.height = `${squareSizePixels}px`;
     square.style.backgroundColor = squareColor;
 
-    square.addEventListener('mouseenter', updateSquare);
+    square.addEventListener('mouseenter', updateSquare );
 
     row.appendChild(square);
 }
 
-function updateSquare() {
+function updateSquare(event) {
+    console.log(this);
+    console.log(event);
+    console.log(event.shiftKey);
+    console.log(event.currentTarget);
+
+    squareDiv = event.currentTarget;
+
     // XXX use of global variable
     if (DontDraw) {
         console.log("Don't draw key is pressed, not updating square");
@@ -147,11 +154,11 @@ function updateSquare() {
         case DrawingModes.Black:
         case DrawingModes.White:
             // This case is simple, we can use named colors
-            this.style.backgroundColor = drawingMode;
+            squareDiv.style.backgroundColor = drawingMode;
             break;
         case DrawingModes.Darken:
         case DrawingModes.Lighten:
-            const squareColor = getComputedStyle(this).backgroundColor;
+            const squareColor = getComputedStyle(squareDiv).backgroundColor;
             // https://stackoverflow.com/a/66623849/9797192
             // we're going to ignore alpha
             let [r, g, b, a] = squareColor.match(/\d+/g).map(Number);
@@ -187,13 +194,13 @@ function updateSquare() {
             // but it's a little silly, since we're not actually storing the more precise value
             // so we already have potential rounding error
             // it's ultimately not precise enough to worry about
-            this.style.backgroundColor = rgbToString(r, g, b);
+            squareDiv.style.backgroundColor = rgbToString(r, g, b);
             break;
         default:
             console.error(`Unknown drawing mode, not updating square: ${drawingMode}`);
     }
 
-    console.log(this);
+    console.log(squareDiv);
 }
 
 /* Is the input RGB color a literal grey (equal color values) */
@@ -248,8 +255,8 @@ resizeButton.addEventListener('click', resizeContainer);
 const drawingModeSelect = document.querySelector('select#drawing-mode');
 drawingModeSelect.addEventListener('change', setDrawingMode);
 
-window.addEventListener('keydown', (event) => { keyDown(event); });
-window.addEventListener('keyup', (event) => { keyUp(event); });
+window.addEventListener('keydown', keyDown);
+window.addEventListener('keyup', keyUp);
 
 initContainer();
 
