@@ -205,13 +205,6 @@ function setDrawingMode() {
     console.log("Set drawing mode");
 
     const drawingModeSelect = document.querySelector('select#drawing-mode');
-    // console.log(drawingModeSelect);
-    // console.log(`value = ${drawingModeSelect.value}`);
-    // This is an alternate way of getting the value
-    // console.log(`options = ${drawingModeSelect.options}`);
-    // console.log(`selectedIndex = ${drawingModeSelect.selectedIndex}`);
-    // console.log(`options[selectedIndex] = ${drawingModeSelect.options[drawingModeSelect.selectedIndex]}`);
-    // console.log(`value at index = ${drawingModeSelect.options[drawingModeSelect.selectedIndex].value}`);
 
     // update global variable
     console.log(`Before: drawingMode = ${DrawingMode}`);
