@@ -15,16 +15,11 @@ const GREY_LEVELS = 10;
 const RGB_MIN = 0;
 const RGB_MAX = 255;
 
-// hold down this key to just move the cursor without drawing
-const DONT_DRAW = 'Shift';
-
 // XXX is there a better solution than global variables?
 
 // Initial values, can change
 let SquaresPerEdge = 16; // change via prompt from Resize button
 let DrawingMode = DrawingModes.Black; // change via pulldown
-// XXX this doesn't do the right thing if the Shift key is pressed already when we load the page
-let DontDraw = false; // change by holding down the key specified via DONT_DRAW
 
 /* Initialize the container */
 function initContainer() {
@@ -133,18 +128,12 @@ function addSquare(row, squareSizePixels, squareColor) {
 }
 
 function updateSquare(event) {
-    console.log(this);
-    console.log(event);
-    console.log(event.shiftKey);
-    console.log(event.currentTarget);
-
-    squareDiv = event.currentTarget;
-
-    // XXX use of global variable
-    if (DontDraw) {
-        console.log("Don't draw key is pressed, not updating square");
+    if (event.shiftKey) {
+        console.log("Shift key is pressed, not updating square");
         return;
     }
+
+    squareDiv = event.currentTarget;
 
     // XXX use of global variable
     const drawingMode = DrawingMode;
@@ -230,20 +219,6 @@ function setDrawingMode() {
     console.log(`After: drawingMode = ${DrawingMode}`);
 }
 
-function keyDown(event) {
-    console.log(`key down: ${event.key}`);
-    if (event.key == DONT_DRAW) {
-        DontDraw = true;
-    }
-}
-
-function keyUp(event) {
-    console.log(`key up: ${event.key}`);
-    if (event.key == DONT_DRAW) {
-        DontDraw = false;
-    }
-}
-
 console.log("Welcome to Etch-A-Sketch");
 
 const resetButton = document.querySelector('button#reset');
@@ -254,9 +229,6 @@ resizeButton.addEventListener('click', resizeContainer);
 
 const drawingModeSelect = document.querySelector('select#drawing-mode');
 drawingModeSelect.addEventListener('change', setDrawingMode);
-
-window.addEventListener('keydown', keyDown);
-window.addEventListener('keyup', keyUp);
 
 initContainer();
 
