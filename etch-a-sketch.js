@@ -50,8 +50,8 @@ function initContainer() {
         // console.log(`Adding row ${x}`);
         addRow(container, squaresPerEdge, squareSizePixels, squareColor);
     }
-    console.log("Container initialized")
-    console.log(container)
+    console.log("Container initialized");
+    console.log(container);
 }
 
 /* Prompt for size, and initialize the container */
@@ -59,14 +59,14 @@ function resizeContainer(event) {
     let squaresPerEdgeStr, squaresPerEdge;
     let valueEntered = false;
     do {
-        squaresPerEdgeStr = prompt("How many squares per side of the grid?")
+        squaresPerEdgeStr = prompt("How many squares per side of the grid?");
         if (squaresPerEdgeStr == null) {
             // Cancel button
             return;
         } else if (squaresPerEdgeStr == "") {
             alert("You have to enter some value");
         } else {
-            squaresPerEdge = parseInt(squaresPerEdgeStr)
+            squaresPerEdge = parseInt(squaresPerEdgeStr);
             if (squaresPerEdge == NaN) {
                 alert("Only numeric values are legal");
             } else if (squaresPerEdge != squaresPerEdgeStr) {
@@ -94,13 +94,13 @@ function getSquareSizePixels(squaresPerEdge) {
     console.log(`The viewport is ${window.innerWidth} x ${window.innerHeight}`);
 
     const head = document.querySelector('#head');
-    const headStyle = getComputedStyle(head);
+    const headStyle = window.getComputedStyle(head);
     const headHeight = parseInt(headStyle.marginTop) + head.clientHeight + parseInt(headStyle.marginBottom);
     console.log(`The height of the head is ${headHeight}`);
 
     // size the total drawable area at 90% of the smaller of the available spaces
     const availHeight = window.innerHeight - headHeight;
-    const availWidth = window.innerWidth
+    const availWidth = window.innerWidth;
     const totalSize = Math.min(availHeight, availWidth) * 0.9;
     const squareSizePixels = totalSize / squaresPerEdge;
     console.log(`Will use an area that is ${totalSize} pixels square,` +
@@ -112,7 +112,7 @@ function getSquareSizePixels(squaresPerEdge) {
 /* Create a new row and add it to the container */
 function addRow(container, squaresPerEdge, squareSizePixels, squareColor) {
     const row = document.createElement('div');
-    row.classList.add('row')
+    row.classList.add('row');
     for (let y = 0; y < squaresPerEdge; y++) {
         // console.log(`Adding square ${y}`);
         addSquare(row, squareSizePixels, squareColor);
@@ -140,7 +140,7 @@ function updateSquare(event) {
         return;
     }
 
-    squareDiv = event.currentTarget;
+    let squareDiv = event.currentTarget;
 
     // XXX use of global variable
     const drawingMode = DrawingMode;
@@ -155,7 +155,7 @@ function updateSquare(event) {
 
         case DrawingModes.Darken:
         case DrawingModes.Lighten:
-            const squareColor = getComputedStyle(squareDiv).backgroundColor;
+            const squareColor = window.getComputedStyle(squareDiv).backgroundColor;
             // https://stackoverflow.com/a/66623849/9797192
             // we're going to ignore alpha
             let [r, g, b, a] = squareColor.match(/\d+/g).map(Number);
