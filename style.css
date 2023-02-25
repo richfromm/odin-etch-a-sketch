@@ -2,8 +2,6 @@ body {
   color: red;
   background-color: #F0F0F0;
   font-family: "Merriweather Sans", sans-serif;
-  font-size: 36px;
-  font-weight: bold;
   text-align: center;
 }
 
@@ -17,12 +15,22 @@ body {
   align-items: center;
 }
 
+.title {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.instructions {
+  font-size: 18px;
+}
+
 button,
 select {
   color: white;
   background-color: red;
   font-size: 18px;
   width: 96px;
+  margin: 6px;
   padding: 6px;
   border: 0px;
   border-radius: 6px;
